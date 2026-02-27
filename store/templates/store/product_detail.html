@@ -1,0 +1,44 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | {{ product.name }}{% endblock %}
+
+{% block content %}
+<section class="detail">
+  <img src="{{ product.image_url }}" alt="{{ product.name }}">
+  <div class="detail-content">
+    <p class="eyebrow">{{ product.category.name }}</p>
+    <h1>{{ product.name }}</h1>
+    <p class="price">&#8377;{{ product.price }}</p>
+    <p>{{ product.description }}</p>
+    <div class="actions">
+      {% if request.user.is_authenticated %}
+      <a class="button" href="{% url 'store:checkout' product.slug %}">Buy now</a>
+      {% else %}
+      <a class="button" href="{% url 'login' %}?next={% url 'store:checkout' product.slug %}">Login to buy</a>
+      {% endif %}
+      <a class="button button-alt" href="{% url 'store:catalog' %}">Back to catalog</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Related Products</h2>
+  </div>
+  <div class="grid">
+    {% for item in related_products %}
+      <article class="card">
+        <img src="{{ item.image_url }}" alt="{{ item.name }}">
+        <div class="card-body">
+          <p class="meta">{{ item.category.name }}</p>
+          <h3>{{ item.name }}</h3>
+          <p>&#8377;{{ item.price }}</p>
+          <a class="product-btn" href="{% url 'store:product_detail' item.slug %}">View product</a>
+        </div>
+      </article>
+    {% empty %}
+      <p>No related products yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

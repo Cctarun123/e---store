@@ -1,0 +1,51 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | My Profile{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-card profile-card">
+    <p class="eyebrow">Account Details</p>
+    <h1>My Profile</h1>
+    {% if messages %}
+      {% for message in messages %}
+      <p class="form-success">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+    <form method="post" class="profile-form">
+      {% csrf_token %}
+      <label for="first_name">First Name</label>
+      <input id="first_name" name="first_name" type="text" value="{{ request.user.first_name }}">
+
+      <label for="last_name">Last Name</label>
+      <input id="last_name" name="last_name" type="text" value="{{ request.user.last_name }}">
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" value="{{ request.user.email }}">
+
+      <label for="phone">Phone</label>
+      <input id="phone" name="phone" type="text" value="{{ profile.phone }}">
+
+      <label for="address_line1">Address Line 1</label>
+      <input id="address_line1" name="address_line1" type="text" value="{{ profile.address_line1 }}">
+
+      <label for="address_line2">Address Line 2</label>
+      <input id="address_line2" name="address_line2" type="text" value="{{ profile.address_line2 }}">
+
+      <label for="city">City</label>
+      <input id="city" name="city" type="text" value="{{ profile.city }}">
+
+      <label for="state">State</label>
+      <input id="state" name="state" type="text" value="{{ profile.state }}">
+
+      <label for="pincode">Pincode</label>
+      <input id="pincode" name="pincode" type="text" value="{{ profile.pincode }}">
+
+      <label for="country">Country</label>
+      <input id="country" name="country" type="text" value="{{ profile.country }}">
+
+      <button class="button" type="submit">Save Profile</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

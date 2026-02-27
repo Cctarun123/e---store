@@ -1,0 +1,24 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | Login{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-card">
+    <p class="eyebrow">Account Access</p>
+    <h1>Login</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label for="id_username">Username</label>
+      {{ form.username }}
+      <label for="id_password">Password</label>
+      {{ form.password }}
+      <button class="button" type="submit">Sign in</button>
+      {% if next %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {% endif %}
+    </form>
+  </div>
+</section>
+{% endblock %}

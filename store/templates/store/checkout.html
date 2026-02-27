@@ -1,0 +1,44 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | Checkout{% endblock %}
+
+{% block content %}
+<section class="checkout">
+  <div class="checkout-card">
+    <p class="eyebrow">Secure Checkout</p>
+    <h1>{{ product.name }}</h1>
+    <p class="price">&#8377;{{ product.price }}</p>
+    <p>{{ product.description }}</p>
+  </div>
+
+  <div class="checkout-card">
+    <h2>Payment Details</h2>
+    {% if messages %}
+      {% for message in messages %}
+      <p class="form-error">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+    <form method="post" class="checkout-form">
+      {% csrf_token %}
+      <label for="full_name">Full Name</label>
+      <input id="full_name" name="full_name" type="text" value="{{ initial_full_name }}" required>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" value="{{ initial_email }}" required>
+
+      <label for="address">Shipping Address</label>
+      <textarea id="address" name="address" rows="4" required>{{ initial_address }}</textarea>
+
+      <label for="payment_method">Payment Method</label>
+      <select id="payment_method" name="payment_method" required>
+        <option value="">Choose one</option>
+        <option value="UPI">UPI</option>
+        <option value="Card">Debit/Credit Card</option>
+        <option value="COD">Cash on Delivery</option>
+      </select>
+
+      <button class="button" type="submit">Pay &#8377;{{ product.price }}</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

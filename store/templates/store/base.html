@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}E-Store{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'store/styles.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="{% url 'store:home' %}">e-store</a>
+    <nav class="main-nav">
+      <a href="{% url 'store:home' %}">Home</a>
+      <a href="{% url 'store:catalog' %}">Catalog</a>
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'store:profile' %}">My Profile</a>
+      <a href="{% url 'store:order_history' %}">My Orders</a>
+      <form class="inline-form" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="nav-button" type="submit">Logout</button>
+      </form>
+      {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>Modern gear for focused, high-performance work.</p>
+  </footer>
+</body>
+</html>

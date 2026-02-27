@@ -1,0 +1,32 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | Catalog{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="section-head">
+    <h1>Catalog</h1>
+    <div class="filters">
+      <a class="chip {% if not active_category %}chip-active{% endif %}" href="{% url 'store:catalog' %}">All</a>
+      {% for category in categories %}
+        <a class="chip {% if active_category == category.slug %}chip-active{% endif %}" href="{% url 'store:catalog' %}?category={{ category.slug }}">{{ category.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="grid">
+    {% for product in products %}
+      <article class="card">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        <div class="card-body">
+          <p class="meta">{{ product.category.name }}</p>
+          <h3>{{ product.name }}</h3>
+          <p>&#8377;{{ product.price }}</p>
+          <a class="product-btn" href="{% url 'store:product_detail' product.slug %}">View product</a>
+        </div>
+      </article>
+    {% empty %}
+      <p>No products found in this category.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

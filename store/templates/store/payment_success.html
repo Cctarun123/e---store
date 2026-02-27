@@ -1,0 +1,20 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | Payment Success{% endblock %}
+
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-card">
+    <p class="eyebrow">Payment Status</p>
+    <h1>Payment Successful</h1>
+    <p>Thanks {{ order.full_name }}. Your order is confirmed.</p>
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+    <p><strong>Product:</strong> {{ order.product.name }}</p>
+    <p><strong>Amount:</strong> &#8377;{{ order.amount }}</p>
+    <p><strong>Method:</strong> {{ order.get_payment_method_display }}</p>
+    <p><strong>Address:</strong> {{ order.address }}</p>
+    <a class="button button-alt" href="{% url 'store:order_history' %}">View order history</a>
+    <a class="button" href="{% url 'store:catalog' %}">Continue shopping</a>
+  </div>
+</section>
+{% endblock %}

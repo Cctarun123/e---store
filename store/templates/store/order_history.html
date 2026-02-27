@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | My Orders{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="section-head">
+    <h1>My Orders</h1>
+  </div>
+  <div class="history-list">
+    {% for order in orders %}
+    <article class="history-item">
+      <img src="{{ order.product.image_url }}" alt="{{ order.product.name }}">
+      <div>
+        <h3>{{ order.product.name }}</h3>
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Amount:</strong> &#8377;{{ order.amount }}</p>
+        <p><strong>Payment:</strong> {{ order.get_payment_method_display }}</p>
+        <p><strong>Purchased On:</strong> {{ order.created_at|date:"d M Y, h:i A" }}</p>
+      </div>
+    </article>
+    {% empty %}
+    <p>You have not bought any products yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

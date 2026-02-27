@@ -1,0 +1,177 @@
+{% extends 'store/base.html' %}
+
+{% block title %}E-Store | Home{% endblock %}
+
+{% block content %}
+<section class="hero hero-startup">
+  <div class="hero-copy reveal-up">
+    <p class="eyebrow">Built For Fast Teams</p>
+    <h1>Gear that helps young startups ship faster.</h1>
+    <p class="hero-sub">
+      Founder-ready tech essentials with clean design, reliable quality,
+      and checkout in minutes.
+    </p>
+    <div class="actions">
+      <a class="button" href="{% url 'store:catalog' %}">Explore products</a>
+      {% if request.user.is_authenticated %}
+      <a class="button button-alt" href="{% url 'store:order_history' %}">My orders</a>
+      {% else %}
+      <a class="button button-alt" href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </div>
+    <div class="hero-stats">
+      <div>
+        <strong>{{ total_products }}+</strong>
+        <span>Products curated</span>
+      </div>
+      <div>
+        <strong>24h</strong>
+        <span>Fast dispatch goal</span>
+      </div>
+      <div>
+        <strong>4.9/5</strong>
+        <span>Founder-rated picks</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-showcase reveal-up-delay">
+    {% if featured_products %}
+    <section class="ad-carousel" data-interval="3200" aria-label="Famous products">
+      <div class="ad-track">
+        {% for product in featured_products %}
+        <article class="focus-card ad-slide{% if forloop.first %} is-active{% endif %}">
+          <img src="{{ product.image_url }}" alt="{{ product.name }}">
+          <div class="focus-body">
+            <p class="meta">{{ product.category.name }}</p>
+            <h3>{{ product.name }}</h3>
+            <p class="price">&#8377;{{ product.price }}</p>
+            <a class="product-btn" href="{% url 'store:product_detail' product.slug %}">View product</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="ad-controls">
+        <div class="ad-dots" role="tablist" aria-label="Famous products dots">
+          {% for product in featured_products %}
+          <button
+            type="button"
+            class="ad-dot{% if forloop.first %} is-active{% endif %}"
+            data-index="{{ forloop.counter0 }}"
+            aria-label="Go to product {{ forloop.counter }}"
+          ></button>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</section>
+
+<section class="trend-strip">
+  <p>Trending this week</p>
+  <div>
+    <a class="trend-btn" href="{% url 'store:catalog' %}?category=computing">Remote setup</a>
+    <a class="trend-btn" href="{% url 'store:catalog' %}?category=audio">Creator desk</a>
+    <a class="trend-btn" href="{% url 'store:catalog' %}?category=tech-essentials">Productivity kit</a>
+    <a class="trend-btn" href="{% url 'store:catalog' %}?category=wearables">Travel-ready</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Featured Picks</h2>
+  </div>
+  <div class="grid">
+    {% for product in featured_products %}
+      <article class="card">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        <div class="card-body">
+          <p class="meta">{{ product.category.name }}</p>
+          <h3>{{ product.name }}</h3>
+          <p>&#8377;{{ product.price }}</p>
+          <a class="product-btn" href="{% url 'store:product_detail' product.slug %}">View product</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Latest Drops</h2>
+  </div>
+  <div class="grid">
+    {% for product in products %}
+      <article class="card">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        <div class="card-body">
+          <p class="meta">{{ product.category.name }}</p>
+          <h3>{{ product.name }}</h3>
+          <p>&#8377;{{ product.price }}</p>
+          <a class="product-btn" href="{% url 'store:product_detail' product.slug %}">View product</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Tech Essentials</h2>
+  </div>
+  <div class="grid">
+    {% for product in essentials %}
+      <article class="card">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        <div class="card-body">
+          <p class="meta">{{ product.category.name }}</p>
+          <h3>{{ product.name }}</h3>
+          <p>&#8377;{{ product.price }}</p>
+          <a class="product-btn" href="{% url 'store:product_detail' product.slug %}">View product</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  (function () {
+    const carousels = document.querySelectorAll(".ad-carousel");
+    carousels.forEach((carousel) => {
+      const slides = Array.from(carousel.querySelectorAll(".ad-slide"));
+      const dots = Array.from(carousel.querySelectorAll(".ad-dot"));
+      const intervalMs = Number(carousel.dataset.interval || 3000);
+      if (!slides.length) return;
+
+      let index = 0;
+      let timer = null;
+
+      const show = (nextIndex) => {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle("is-active", i === index));
+        dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
+      };
+
+      const start = () => {
+        stop();
+        timer = setInterval(() => show(index + 1), intervalMs);
+      };
+
+      const stop = () => {
+        if (timer) clearInterval(timer);
+      };
+
+      dots.forEach((dot, i) =>
+        dot.addEventListener("click", () => {
+          show(i);
+          start();
+        })
+      );
+
+      show(0);
+      start();
+    });
+  })();
+</script>
+{% endblock %}
